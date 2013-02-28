@@ -13,7 +13,7 @@ Keywords :
 Instructions
 ============
 
-First read `Vagrant + fabric bootstrap <http://harobed.github.com/vagrant-fabric-bootstrap/>`_.
+First read `Vagrant + fabric bootstrap < http://harobed.github.com/vagrant-fabric-bootstrap/ >`_.
 
 Next, configure LXC Host :
 
