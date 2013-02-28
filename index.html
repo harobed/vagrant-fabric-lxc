@@ -1,0 +1,169 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Vagrant + fabric + LXC &mdash; vagrant-fabric-lxc 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="vagrant-fabric-lxc 0.1.0 documentation" href="#" /> 
+  </head>
+  <body>
+  
+  
+  <div class=indexwrapper>
+  
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="vagrant-fabric-lxc">
+<h1>Vagrant + fabric + LXC<a class="headerlink" href="#vagrant-fabric-lxc" title="Permalink to this headline">¶</a></h1>
+<p>This repository is a quick start to test / build a Debian Squeeze LXC environment.</p>
+<p>Keywords :</p>
+<ul class="simple">
+<li>Debian Squeeze</li>
+<li>LXC</li>
+</ul>
+<div class="section" id="instructions">
+<h2>Instructions<a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h2>
+<p>Prerequisites : see <a class="reference external" href="http://harobed.github.com/vagrant-fabric-bootstrap/#prerequisites">« Prerequisites section »</a> in Vagrant + fabric bootstrap doc.</p>
+<div class="section" id="init-your-vagrant-instance">
+<h3>Init your vagrant instance<a class="headerlink" href="#init-your-vagrant-instance" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/harobed/vagrant-fabric-lxc.git ./
+<span class="nv">$ </span>python bootstrap.py
+<span class="nv">$ </span>bin/buildout
+<span class="nv">$ </span>vagrant up
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-and-configure-lxc-in-this-vagrant-instance">
+<h3>Install and configure LXC in this Vagrant instance<a class="headerlink" href="#install-and-configure-lxc-in-this-vagrant-instance" title="Permalink to this headline">¶</a></h3>
+<p>Next, configure LXC Host :</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>bin/fab vagrant install
+</pre></div>
+</div>
+<p>Create a new container (named by default <tt class="docutils literal"><span class="pre">my_container</span></tt>) :</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>bin/fab vagrant create_container
+</pre></div>
+</div>
+<p>You can also destroy this container :</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>bin/fab vagrant destroy_container
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="play-with-your-container">
+<h2>Play with your container<a class="headerlink" href="#play-with-your-container" title="Permalink to this headline">¶</a></h2>
+<p>Start container :</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>vagrant ssh
+vagrant@vagrant:~<span class="nv">$ </span>sudo su
+root@vagrant:/home/vagrant# lxc-start -n my_container -d
+</pre></div>
+</div>
+<p>See if your container is started :</p>
+<div class="highlight-sh"><div class="highlight"><pre>root@vagrant:/home/vagrant# root@vagrant:/home/vagrant# lxc-ls
+my_container
+my_container
+</pre></div>
+</div>
+<ul class="simple">
+<li>First line is the list of all container.</li>
+<li>Second list is the list of container started.</li>
+</ul>
+<p>See the init log of your container :</p>
+<div class="highlight-sh"><div class="highlight"><pre>root@vagrant:/home/vagrant# cat /var/log/lxc/my_container.log
+INIT: version 2.88 booting
+Using makefile-style concurrent boot in runlevel S.
+hostname: the specified hostname is invalid
+Activating swap...done.
+Cleaning up ifupdown....
+Setting up networking....
+Activating lvm and md swap...done.
+Checking file systems...fsck from util-linux-ng 2.17.2
+<span class="k">done</span>.
+Mounting <span class="nb">local </span>filesystems...done.
+Activating swapfile swap...done.
+Cleaning up temporary files....
+Setting kernel variables ...done.
+Configuring network interfaces...done.
+Cleaning up temporary files....
+startpar: service<span class="o">(</span>s<span class="o">)</span> returned failure: hostname.sh ... failed!
+INIT: Entering runlevel: 3
+Using makefile-style concurrent boot in runlevel 3.
+Starting OpenBSD Secure Shell server: sshd.
+
+Debian GNU/Linux 6.0 my_container console
+
+my_container login:
+</pre></div>
+</div>
+<p>Connect to your container :</p>
+<div class="highlight-sh"><div class="highlight"><pre>root@vagrant:/home/vagrant# lxc-console -n my_container
+
+Type &lt;Ctrl+a q&gt; to <span class="nb">exit </span>the console
+
+root@:/dev# <span class="nb">cd</span>
+root@:~#
+</pre></div>
+</div>
+<p>Note : <tt class="docutils literal"><span class="pre">Type</span> <span class="pre">&lt;Ctrl+a</span> <span class="pre">q&gt;</span> <span class="pre">to</span> <span class="pre">exit</span> <span class="pre">the</span> <span class="pre">console</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <a href="http://github.com/https://github.com/harobed/vagrant-fabric-lxc/"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+
+  <div class="footer">
+    &copy; Copyright 2013, Stéphane Klein.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </div>
+  
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.stephane-klein.info/" : "http://piwik.stephane-klein.info/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 6);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.stephane-klein.info/piwik.php?idsite=6" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+  </body>
+</html>
