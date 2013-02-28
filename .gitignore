@@ -4,3 +4,4 @@ src/
 *.pyc
 .vagrant
 .installed.cfg
+_build
