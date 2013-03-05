@@ -112,3 +112,17 @@ Connect to your container :
     root@:~# 
 
 Note : ``Type <Ctrl+a q> to exit the console``.
+
+
+Network configuration
+=====================
+
+The network configuration use :
+
+* a NAT on ``eth0``
+* use `Dnsmasq <http://fr.wikipedia.org/wiki/Dnsmasq>`_ to provide IP address to Guests
+* Guests IP address are from 192.168.10.1 to 192.168.10.250
+* Guests are connected to Host network with the bridge ``br0``
+
+It's possible set full bridge network configure (without NAT) but it's more difficult
+to have "plug and play" system with vagrant.

@@ -54,17 +54,13 @@ auto lo
 iface lo inet loopback
 
 auto veth0
-iface veth0 inet static
-  address 192.168.33.10
-  netmask 255.255.255.0
-  gateway 192.168.33.11
+iface veth0 inet dhcp
 EOF
 
     # set the hostname
     cat <<EOF > $rootfs/etc/hostname
 $hostname
 EOF
-    cat "nameserver 8.8.8.8" > /etc/resolv.conf
 
     # reconfigure some services
     if [ -z "$LANG" ]; then
@@ -196,7 +192,6 @@ lxc.network.type = veth
 lxc.network.name = veth0
 lxc.network.flags = up
 lxc.network.link = br0
-lxc.network.veth.pair = veth0-c2
 
 lxc.tty = 1
 lxc.console = /var/log/lxc/$name.log
