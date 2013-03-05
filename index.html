@@ -130,6 +130,18 @@ root@:~#
 </div>
 <p>Note : <tt class="docutils literal"><span class="pre">Type</span> <span class="pre">&lt;Ctrl+a</span> <span class="pre">q&gt;</span> <span class="pre">to</span> <span class="pre">exit</span> <span class="pre">the</span> <span class="pre">console</span></tt>.</p>
 </div>
+<div class="section" id="network-configuration">
+<h2>Network configuration<a class="headerlink" href="#network-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The network configuration use :</p>
+<ul class="simple">
+<li>a NAT on <tt class="docutils literal"><span class="pre">eth0</span></tt></li>
+<li>use <a class="reference external" href="http://fr.wikipedia.org/wiki/Dnsmasq">Dnsmasq</a> to provide IP address to Guests</li>
+<li>Guests IP address are from 192.168.10.1 to 192.168.10.250</li>
+<li>Guests are connected to Host network with the bridge <tt class="docutils literal"><span class="pre">br0</span></tt></li>
+</ul>
+<p>It&#8217;s possible set full bridge network configure (without NAT) but it&#8217;s more difficult
+to have &#8220;plug and play&#8221; system with vagrant.</p>
+</div>
 </div>
 
 
