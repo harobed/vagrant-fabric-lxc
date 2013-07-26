@@ -2,18 +2,28 @@
 Vagrant + fabric + LXC
 ======================
 
-This repository is a quick start to test / build a Debian Squeeze LXC environment.
+This repository is a quick start to test / build a Debian Wheezy LXC environment.
 
 Keywords :
 
-* Debian Squeeze
+* Debian Wheezy
 * LXC
 
 
 Instructions
 ============
 
-Prerequisites : see `« Prerequisites section » <http://harobed.github.com/vagrant-fabric-bootstrap/#prerequisites>`_ in Vagrant + fabric bootstrap doc.
+Prerequisites :
+
+* `Vagrant 1.2.5 or upper <http://downloads.vagrantup.com/>`_
+* Install vagrant plugins :
+
+.. code-block:: sh
+
+      $ vagrant plugin install vagrant-hostsupdater
+      $ vagrant plugin install vagrant-hostmanager
+      $ vagrant plugin install vagrant-cachier
+
 
 Init your vagrant instance
 --------------------------
@@ -22,7 +32,6 @@ Init your vagrant instance
 
     $ git clone https://github.com/harobed/vagrant-fabric-lxc.git ./
     $ python bootstrap.py
-    $ bin/buildout
     $ vagrant up
 
 
@@ -34,6 +43,7 @@ Next, configure LXC Host :
 .. code-block:: sh
 
     $ bin/fab vagrant install
+
 
 Create a new container (named by default ``my_container``) :
 
@@ -60,6 +70,7 @@ Start container :
     vagrant@vagrant:~$ sudo su
     root@vagrant:/home/vagrant# lxc-start -n my_container -d
 
+
 See if your container is started :
 
 .. code-block:: sh
@@ -67,6 +78,7 @@ See if your container is started :
     root@vagrant:/home/vagrant# root@vagrant:/home/vagrant# lxc-ls 
     my_container
     my_container
+
 
 * First line is the list of all container.
 * Second list is the list of container started.
@@ -99,6 +111,7 @@ See the init log of your container :
     Debian GNU/Linux 6.0 my_container console
 
     my_container login: 
+
 
 Connect to your container :
 

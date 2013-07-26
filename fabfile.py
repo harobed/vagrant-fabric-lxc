@@ -1,7 +1,37 @@
-from fabric.api import task, run, env, put
+from fabric.api import task, local, run, env, put, settings, hide
 from fabric.contrib.files import append as append_to_file
-from fabtools.vagrant import ssh_config, _settings_dict
 import fabtools  # NOQA
+
+
+def _settings_dict(config):
+    settings = {}  # NOQA
+
+    # Build host string
+    settings['user'] = config['User']
+    settings['hosts'] = [config['HostName']]
+    settings['port'] = config['Port']
+
+    # Strip leading and trailing double quotes introduced by vagrant 1.1
+    settings['key_filename'] = config['IdentityFile'].strip('"')
+
+    settings['forward_agent'] = (config.get('ForwardAgent', 'no') == 'yes')
+    settings['disable_known_hosts'] = True
+
+    return settings
+
+
+def ssh_config(name=''):
+    """
+    Get the SSH parameters for connecting to a vagrant VM.
+    """
+    with settings(hide('running')):
+        output = local('vagrant ssh-config %s' % name, capture=True)  # NOQA
+
+    config = {}
+    for line in output.splitlines()[1:]:
+        key, value = line.strip().split(' ', 2)
+        config[key] = value
+    return config
 
 
 @task
@@ -16,6 +46,7 @@ def vagrant(name=''):
 def install():
     fabtools.deb.update_index()
     fabtools.deb.upgrade()
+    return
     fabtools.require.deb.packages([
         'lxc', 'debootstrap', 'bridge-utils', 'libvirt-bin', 'dnsmasq'
     ])

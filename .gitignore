@@ -5,3 +5,6 @@ src/
 .vagrant
 .installed.cfg
 _build
+.Python
+include/
+lib/
