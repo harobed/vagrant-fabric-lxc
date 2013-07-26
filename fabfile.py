@@ -1,6 +1,5 @@
 from fabric.api import task, run, env, put
 from fabric.contrib.files import append as append_to_file
-from fabric.contrib.files import sed
 from fabtools.vagrant import ssh_config, _settings_dict
 import fabtools  # NOQA
 
@@ -11,38 +10,6 @@ def vagrant(name=''):
     extra_args = _settings_dict(config)
     env.update(extra_args)
     env['user'] = 'root'
-
-
-#@task
-#def install_backport():
-    #run('apt-get update')
-    #run('apt-get upgrade')
-    #fabtools.require.files.file(
-        #'/etc/apt/preferences.d/lxc',
-        #contents="""\
-#Package: lxc
-#Pin: release a=squeeze-backports
-#Pin-Priority: 1000
-#"""
-    #)
-    #fabtools.require.deb.source('lxc', 'http://backports.debian.org/debian-backports', 'squeeze-backports', 'main')
-
-    #fabtools.deb.preseed_package('lxc', {
-        #'lxc/directory': ('string', '/var/lib/lxc'),
-        #'lxc/shutdown': ('select', '/usr/bin/lxc-halt'),
-        #'lxc/title': ('title', ''),
-        #'lxc/auto': ('boolean', 'true')
-    #})
-
-    #fabtools.require.deb.packages([
-        #'lxc', 'debootstrap', 'bridge-utils', 'libvirt-bin'
-    #])
-
-    #append_to_file(
-        #'/etc/fstab',
-        #'cgroup /sys/fs/cgroup cgroup defaults 0 0'
-    #)
-    #run('mount /sys/fs/cgroup')
 
 
 @task
