@@ -49,93 +49,24 @@ Create a new container (named by default ``my_container``) :
 
 .. code-block:: sh
 
-    $ bin/fab vagrant create_container
-
-
-You can also destroy this container :
-
-.. code-block:: sh
-
-    $ bin/fab vagrant destroy_container
-
-
-Play with your container
-========================
-
-Start container :
-
-.. code-block:: sh
-
     $ vagrant ssh
     vagrant@vagrant:~$ sudo su
-    root@vagrant:/home/vagrant# lxc-start -n my_container -d
+    root@vagrant:/home/vagrant# lxc-create -n my_container -t debian
 
-
-See if your container is started :
-
-.. code-block:: sh
-
-    root@vagrant:/home/vagrant# root@vagrant:/home/vagrant# lxc-ls 
-    my_container
-    my_container
-
-
-* First line is the list of all container.
-* Second list is the list of container started.
-
-See the init log of your container :
+Show container list :
 
 .. code-block:: sh
 
-    root@vagrant:/home/vagrant# cat /var/log/lxc/my_container.log 
-    INIT: version 2.88 booting
-    Using makefile-style concurrent boot in runlevel S.
-    hostname: the specified hostname is invalid
-    Activating swap...done.
-    Cleaning up ifupdown....
-    Setting up networking....
-    Activating lvm and md swap...done.
-    Checking file systems...fsck from util-linux-ng 2.17.2
-    done.
-    Mounting local filesystems...done.
-    Activating swapfile swap...done.
-    Cleaning up temporary files....
-    Setting kernel variables ...done.
-    Configuring network interfaces...done.
-    Cleaning up temporary files....
-    startpar: service(s) returned failure: hostname.sh ... failed!
-    INIT: Entering runlevel: 3
-    Using makefile-style concurrent boot in runlevel 3.
-    Starting OpenBSD Secure Shell server: sshd.
+    root@lxc:/home/vagrant# lxc-list
+    RUNNING
 
-    Debian GNU/Linux 6.0 my_container console
+    FROZEN
 
-    my_container login: 
+    STOPPED
+      my_container
 
-
-Connect to your container :
+Start ``my_container`` LXC instance :
 
 .. code-block:: sh
 
-    root@vagrant:/home/vagrant# lxc-console -n my_container
-
-    Type <Ctrl+a q> to exit the console
-
-    root@:/dev# cd
-    root@:~# 
-
-Note : ``Type <Ctrl+a q> to exit the console``.
-
-
-Network configuration
-=====================
-
-The network configuration use :
-
-* a NAT on ``eth0``
-* use `Dnsmasq <http://fr.wikipedia.org/wiki/Dnsmasq>`_ to provide IP address to Guests
-* Guests IP address are from 192.168.10.1 to 192.168.10.250
-* Guests are connected to Host network with the bridge ``br0``
-
-It's possible set full bridge network configure (without NAT) but it's more difficult
-to have "plug and play" system with vagrant.
+    root@lxc:/home/vagrant# lxc-start -n my_container -d
