@@ -58,9 +58,9 @@ def install():
 
     put(
         'templates/lxc-debian-sk',
-        '/usr/lib/lxc/templates/'
+        '/usr/share/lxc/templates/'
     )
-    run('chmod ugo+x /usr/lib/lxc/templates/lxc-debian-sk')
+    run('chmod ugo+x /usr/share/lxc/templates/lxc-debian-sk')
 
     append_to_file(
         '/etc/network/interfaces',
