@@ -51,7 +51,7 @@ Create a new container (named by default ``my_container``) :
 
     $ vagrant ssh
     vagrant@vagrant:~$ sudo su
-    root@vagrant:/home/vagrant# lxc-create -n my_container -t debian
+    root@vagrant:/home/vagrant# lxc-create -n my_container -t debian-sk
 
 Show container list :
 
@@ -70,3 +70,12 @@ Start ``my_container`` LXC instance :
 .. code-block:: sh
 
     root@lxc:/home/vagrant# lxc-start -n my_container -d
+
+
+Enter in ``my_container`` LXC instance :
+
+.. code-block:: sh
+
+    root@lxc:/home/vagrant# lxc-console -n my_container
+
+Default login / password is ``root`` / ``root``.

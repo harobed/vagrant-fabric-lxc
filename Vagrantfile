@@ -4,6 +4,7 @@
 Vagrant.configure("2") do |config|
     config.vm.box = "debian-wheezy64"
     config.vm.box_url = "https://dl.dropboxusercontent.com/s/xymcvez85i29lym/vagrant-debian-wheezy64.box"
+    config.vm.synced_folder "src/", "/home/vagrant/src/"
 
     config.vm.hostname = "lxc"
     config.vm.provision :shell, :path => "append_authorized_keys_to_root.sh"
