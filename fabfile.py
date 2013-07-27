@@ -48,7 +48,7 @@ def install():
     fabtools.deb.update_index()
     fabtools.deb.upgrade()
     fabtools.require.deb.packages([
-        'lxc', 'debootstrap', 'bridge-utils', 'libvirt-bin', 'dnsmasq'
+        'lxc', 'debootstrap', 'bridge-utils', 'libvirt-bin', 'dnsmasq', 'rsync'
     ])
     append_to_file(
         '/etc/fstab',
