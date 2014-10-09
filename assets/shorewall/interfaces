@@ -1,0 +1,6 @@
+###############################################################################
+FORMAT 2
+###############################################################################
+net     eth0      dhcp,tcpflags,logmartians,nosmurfs,routefilter,routeback
+net     eth1      dhcp,tcpflags,logmartians,nosmurfs,routefilter,routeback
+loc     br0       tcpflags,nosmurfs,routefilter,logmartians,routeback

@@ -27,7 +27,10 @@ configure_debian()
 {
     rootfs=$1
     hostname=$2
+    ip=$3
+    gateway=$4
 
+    echo "$ip $hostname" >> /etc/hosts
     # squeeze only has /dev/tty and /dev/tty0 by default,
     # therefore creating missing device nodes for tty1-4.
     for tty in $(seq 1 4); do
@@ -68,7 +71,13 @@ auto lo
 iface lo inet loopback
 
 auto veth0
-iface veth0 inet dhcp
+iface veth0 inet static
+    address $ip
+    netmask 255.255.255.0
+    broadcast 10.0.255.255
+    gateway $gateway
+    dns-nameservers 8.8.8.8
+    dns-nameservers 8.8.4.4
 EOF
 
     # set the hostname
@@ -108,7 +117,10 @@ netbase,\
 net-tools,\
 iproute,\
 iputils-ping,\
-openssh-server
+openssh-server,\
+sudo,\
+cron,\
+rsyslog
 
     cache=$1
     arch=$2
@@ -195,6 +207,7 @@ copy_configuration()
     path=$1
     rootfs=$2
     hostname=$3
+    gateway=$4
 
     grep -q "^lxc.rootfs" $path/config 2>/dev/null || echo "lxc.rootfs = $rootfs" >> $path/config
     cat <<EOF >> $path/config
@@ -206,6 +219,8 @@ lxc.network.type = veth
 lxc.network.name = veth0
 lxc.network.flags = up
 lxc.network.link = br0
+lxc.network.ipv4 = $ip/24
+lxc.network.ipv4.gateway = $gateway
 
 # When using LXC with apparmor, uncomment the next line to run unconfined:
 #lxc.aa_profile = unconfined
@@ -266,12 +281,12 @@ clean()
 usage()
 {
     cat <<EOF
-$1 -h|--help -p|--path=<path> --clean
+$1 -h|--help -p|--path=<path> -i|--ip=<ip> -g|--gateway=<gateway> --clean
 EOF
     return 0
 }
 
-options=$(getopt -o hp:n:c -l help,path:,name:,clean -- "$@")
+options=$(getopt -o hp:n:ci:g: -l help,path:,name:,ip:,gateway:,clean -- "$@")
 if [ $? -ne 0 ]; then
         usage $(basename $0)
         exit 1
@@ -284,6 +299,8 @@ do
         -h|--help)      usage $0 && exit 0;;
         -p|--path)      path=$2; shift 2;;
         -n|--name)      name=$2; shift 2;;
+        -i|--ip)        ip=$2; shift 2;;
+        -g|--gateway)   gateway=$2; shift 2;;
         -c|--clean)     clean=$2; shift 2;;
         --)             shift 1; break ;;
         *)              break ;;
@@ -326,13 +343,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-configure_debian $rootfs $name
+configure_debian $rootfs $name $ip $gateway
 if [ $? -ne 0 ]; then
     echo "failed to configure debian for a container"
     exit 1
 fi
 
-copy_configuration $path $rootfs $name
+copy_configuration $path $rootfs $name $gateway
 if [ $? -ne 0 ]; then
     echo "failed write configuration file"
     exit 1
