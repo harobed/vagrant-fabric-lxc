@@ -1,0 +1,10 @@
+###############################################################################
+#SOURCE DEST    POLICY      LOG LIMIT:      CONNLIMIT:
+#               LEVEL   BURST       MASK
+loc     net     ACCEPT
+loc     $FW     ACCEPT
+$FW     net     ACCEPT
+$FW     loc     ACCEPT
+net     all     DROP        info
+# THE FOLLOWING POLICY MUST BE LAST
+all     all     REJECT      info

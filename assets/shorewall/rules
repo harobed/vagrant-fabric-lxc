@@ -1,0 +1,7 @@
+SECTION NEW
+
+Invalid(DROP)   net     all
+SSH(ACCEPT)     net     $FW
+HTTP(ACCEPT)    net     $FW
+Ping(ACCEPT)    loc     $FW
+DNAT            net     loc:10.0.0.10:22 tcp        2010
